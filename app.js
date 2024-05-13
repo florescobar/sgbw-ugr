@@ -43,29 +43,6 @@ app.use(passport.session())
    
 passport.use(new LocalStrategy (authUser))
 
-/*passport.use(new LocalStrategy (function (username, password, done) {
-	logger.debug(`-----> Autentificando  a ${username}`)
-	logger.debug(`----->    con password ${password}`)
-	const userdb = await prisma.user.findUnique({
-		where: {
-			username: username,
-			password: password
-		}
-	})
-
-	if(username == "florescobar919" && password == "1234")
-		return done(null, {id:1, name:"uriel"})
-	return done(null, false)
-
-	if (!userdb) {
-		logger.debug(`El usuario ${username} no está en la Base de Datos`)
-		return done(null, false)
-	}
-
-	const authenticated_user = { username: userdb.username, admin:userdb.admin}
-	return done (null, authenticated_user)
-}))*/
-
 passport.serializeUser( (userObj, done) => {
 	done(null, userObj)
 })

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node api.js",
     "dev": "npx nodemon app",
     "test": "mocha --reporter spec"
   },
@@ -17,6 +17,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-sesssion": "^1.15.5",
+    "fastify": "^4.27.0",
     "nunjucks": "^3.2.4",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
