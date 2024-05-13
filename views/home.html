@@ -10,7 +10,16 @@
 <body class="font-sans antialiased">
   <header class="bg-gray-800 text-white p-4">
     SGBW
+    <div class="float-right">
+      {% if username %}
+        <p class="inline-block mr-4">{{username}}</p>
+        <a href="/logout" class="inline-block">Logout</a>
+      {% else %}
+        <a href="/auth/login" class="inline-block">Login</a>
+      {% endif %}
+    </div>
   </header>
+
   <div class="flex">
     <aside class="w-1/6 bg-gray-200 p-4">
       <div class="sidebar">

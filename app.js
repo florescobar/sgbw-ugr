@@ -2,16 +2,25 @@
 import express from 'express'
 import nunjucks from 'nunjucks'
 import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
-
 import * as dotenv from 'dotenv'
+import winston from 'winston';
+import auth from './auth.js'
+import session from 'express-session'
+import passport from 'passport'
+// Usamos "local" strategy
+import LocalStrategy from 'passport-local' 
+import cookieParser from 'cookie-parser'
+
+
 dotenv.config()
 
+const prisma = new PrismaClient();
 const IN   = process.env.IN            // 'development' or 'production'
 const PORT = process.env.PORT
-
 var app = express()
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use('/auth', auth)
 
 nunjucks.configure('views', {         // directorio 'views' para los templates html
 	autoescape: true,
@@ -20,9 +29,79 @@ nunjucks.configure('views', {         // directorio 'views' para los templates h
 	express: app
 })
 
-app.use(express.static('public'));
 
-app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser("secret"))
+
+app.use(session({
+	secret: "secret",
+	resave: false ,
+	saveUninitialized: true ,
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())    
+   
+passport.use(new LocalStrategy (authUser))
+
+/*passport.use(new LocalStrategy (function (username, password, done) {
+	logger.debug(`-----> Autentificando  a ${username}`)
+	logger.debug(`----->    con password ${password}`)
+	const userdb = await prisma.user.findUnique({
+		where: {
+			username: username,
+			password: password
+		}
+	})
+
+	if(username == "florescobar919" && password == "1234")
+		return done(null, {id:1, name:"uriel"})
+	return done(null, false)
+
+	if (!userdb) {
+		logger.debug(`El usuario ${username} no está en la Base de Datos`)
+		return done(null, false)
+	}
+
+	const authenticated_user = { username: userdb.username, admin:userdb.admin}
+	return done (null, authenticated_user)
+}))*/
+
+passport.serializeUser( (userObj, done) => {
+	done(null, userObj)
+})
+passport.deserializeUser((userObj, done) => {
+	done (null, userObj )
+})
+
+async function  authUser(username, password, done) {
+	logger.debug(`-----> Autentificando  a ${username}`)
+	logger.debug(`----->    con password ${password}`)
+	const userdb = await prisma.user.findUnique({
+		where: {
+			username: username,
+			password: password
+		}
+	})
+
+	if (!userdb) {
+		logger.debug(`El usuario ${username} no está en la Base de Datos`)
+		return done(null, false)
+	}
+
+	const authenticated_user = { username: userdb.username, admin:userdb.admin}
+	return done (null, authenticated_user)
+}
+
+const checkAuthenticated = (req, res, next) => {
+	if (req.isAuthenticated()) { return next() }
+	res.redirect("/auth/login")
+}
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  transports: [new winston.transports.Console()],
+});
 			
 app.set('view engine', 'html')
 
@@ -60,45 +139,55 @@ app.get('/usuarios/con-email/de/:dominio', async (req, res) => {
   	res.render('home.html', {userswheredomain: allAdminUsersDomain, domain: dominio})
 });
 
-app.get('/create-facture', async (req, res) => {
-  	res.render('home.html', {createfacture: true})
+app.get('/create-facture', checkAuthenticated, async (req, res) => {
+		const username = req.session.passport.user.username
+  	res.render('home.html', {createfacture: true, username})
 });
 
-app.post('/save-factura', async (req, res) => {
+app.post('/save-factura', checkAuthenticated, async (req, res) => {
 	try 
 	{
-        const { client, date, concept, cuantity, price } = req.body;
-        const factura = await prisma.factura.create({
-            data: {
-                client,
-                date: new Date(`${date}T00:00:00.000Z`), 
-                concept,
-                cuantity: parseFloat(cuantity),
-                price: parseFloat(price),
-                total: parseFloat(cuantity) * parseFloat(price) 
-            }
-        });
-        res.send('Factura guardada correctamente.');
-		res.render('home.html', {createfacture: true})
+		const { client, date, concept, cuantity, price } = req.body;
+		const factura = await prisma.factura.create({
+				data: {
+						client,
+						date: new Date(`${date}T00:00:00.000Z`), 
+						concept,
+						cuantity: parseFloat(cuantity),
+						price: parseFloat(price),
+						total: parseFloat(cuantity) * parseFloat(price) 
+				}
+    });
+		logger.log('info', 'Factura guardada correctamente.');
+		const facturas = await prisma.factura.findMany()
+		const facturasFormateadas = facturas.map(factura => ({
+			...factura,
+			date: formatearFecha(factura.date)
+		}));
+
+		res.redirect('/facturas');
     } catch (error) {
-        console.error('Error al guardar la factura:', error);
-        res.status(500).send('Error interno del servidor.');
+			logger.error(`$Error al guardar la factura: {error}`);
+      res.status(500).send('Error interno del servidor.');
     }
 });
 
-app.get('/facturas', async (req, res) => {
+app.get('/facturas', checkAuthenticated,  async (req, res) => {
 	const facturas = await prisma.factura.findMany()
-
+	const username = req.session.passport.user.username
 	const facturasFormateadas = facturas.map(factura => ({
 		...factura,
 		date: formatearFecha(factura.date)
 	}));
 
-	// Renderizar la tabla de facturas
-	//res.render('facturas', { facturas: facturasFormateadas });
-
-	res.render('home.html', {facturas: facturasFormateadas})
+	res.render('home.html', { facturas: facturasFormateadas, username });	
 });
+
+app.post('/login', passport.authenticate('local', {
+	successRedirect: "/usuarios",
+	failureRedirect: "/auth/login"
+}));
+
 
 app.use(function(req, res, next) {
 	res.status(404).render("404.html")

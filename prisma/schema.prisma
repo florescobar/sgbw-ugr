@@ -16,6 +16,7 @@ model User {
 	lastName    String?
 	admin       Boolean    @default(false)
 	image       String?    @unique
+	password    String?
 }
 
 model Factura {
