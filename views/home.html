@@ -1,136 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tailwind CSS Layout</title>
-    <link rel="stylesheet" href="/style.css" />
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SGBW Project</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="font-sans antialiased">
-    <header class="bg-gray-800 text-white p-4">
-        SGBW
-    </header>
-    <div class="flex">
-        <aside class="w-1/6 bg-gray-200 p-4">
-            <div class="sidebar">
-                <ul>
-                    <li><a class="block py-2 px-4 text-gray-800 hover:bg-gray-200" href="/usuarios">Usuarios</a></li>
-                    <li><a class="block py-2 px-4 text-gray-800 hover:bg-gray-200" href="/usuarios/admin">Usuarios Administradores</a></li>
-                    <li><a class="block py-2 px-4 text-gray-800 hover:bg-gray-200" href="/usuarios/con-email/de/nature.com">Usuarios con email de dominio</a></li>
-                </ul>
-            </div>
-        </aside>
-        <main class="w-2/3 bg-gray-100 p-4 pl-8">
-            {% if users %}
-            <h2 class="text-xl font-bold text-gray-800 mt-4 mb-4">Usuarios</h2>
-            <table class="table-auto border-collapse border-spacing-2 border border-slate-400 mb-8">
-                <thead>
-                  <tr class="row">
-                    <th class="border border-slate-300 px-2 py-2">Id</th>
-                    <th class="border border-slate-300 px-2 py-2">Usuario</th>
-                    <th class="border border-slate-300 px-2 py-2">Email</th>
-                    <th class="border border-slate-300 px-2 py-2">Nombre</th>
-                    <th class="border border-slate-300 px-2 py-2">Apellidos</th>
-                    <th class="border border-slate-300 px-2 py-2">Admin</th>
-                    <th class="border border-slate-300 px-2 py-2">Imagen</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for a in users%}
-                  <tr class="row">
-                    <td class="border border-slate-300 px-2 py-2">{{a.id}}</td>
-                    <td class="border border-slate-300 px-2 py-2">{{a.username}}</td>
-                    <td class="border border-slate-300 px-2 py-2">{{a.email}}</td>
-                    <td class="border border-slate-300 px-2 py-2">{{a.firstName}}</td>
-                    <td class="border border-slate-300 px-2 py-2">{{a.lastName}}</td>
-                    <td class="border border-slate-300 px-2 py-2">{{a.admin}}
-                    </td>
-                    <td class="border border-slate-300 px-2 py-2 whitespace-nowrap">
-                      <img style="height:35px ;" src="{{a.image}}" alt="Avatar">
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-            </table>
-            {% endif %}
+  <header class="bg-gray-800 text-white p-4">
+    SGBW
+  </header>
+  <div class="flex">
+    <aside class="w-1/6 bg-gray-200 p-4">
+      <div class="sidebar">
+        <ul>
+          <li><a class="block py-2 px-4 text-gray-800 hover:bg-gray-200" href="/usuarios">Usuarios</a></li>
+          <li><a class="block py-2 px-4 text-gray-800 hover:bg-gray-200" href="/usuarios/admin">Usuarios Administradores</a></li>
+          <li><a class="block py-2 px-4 text-gray-800 hover:bg-gray-200" href="/usuarios/con-email/de/nature.com">Usuarios con email de dominio</a></li>
+          <li><a class="block py-2 px-4 text-gray-800 hover:bg-gray-200" href="/create-facture">Crear Factura</a></li>
+          <li><a class="block py-2 px-4 text-gray-800 hover:bg-gray-200" href="/facturas">Facturas</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="w-2/3 bg-gray-100 p-4 pl-8">
+        {% if users %}
+        <h2 class="text-xl font-bold text-gray-800 mt-4 mb-4">Usuarios</h2>
+        <table class="table-auto border-collapse border-spacing-2 border border-slate-400 mb-8">
+            <thead>
+              <tr class="row">
+                <th class="border border-slate-300 px-2 py-2">Id</th>
+                <th class="border border-slate-300 px-2 py-2">Usuario</th>
+                <th class="border border-slate-300 px-2 py-2">Email</th>
+                <th class="border border-slate-300 px-2 py-2">Nombre</th>
+                <th class="border border-slate-300 px-2 py-2">Apellidos</th>
+                <th class="border border-slate-300 px-2 py-2">Admin</th>
+                <th class="border border-slate-300 px-2 py-2">Imagen</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for a in users%}
+              <tr class="row">
+                <td class="border border-slate-300 px-2 py-2">{{a.id}}</td>
+                <td class="border border-slate-300 px-2 py-2">{{a.username}}</td>
+                <td class="border border-slate-300 px-2 py-2">{{a.email}}</td>
+                <td class="border border-slate-300 px-2 py-2">{{a.firstName}}</td>
+                <td class="border border-slate-300 px-2 py-2">{{a.lastName}}</td>
+                <td class="border border-slate-300 px-2 py-2">{{a.admin}}
+                </td>
+                <td class="border border-slate-300 px-2 py-2 whitespace-nowrap">
+                  <img style="height:35px ;" src="{{a.image}}" alt="Avatar">
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
 
-            {% if admins %}
-            <h2 class="text-xl font-bold text-gray-800 mt-4 mb-4">Usuarios Administradores</h2>
-            <table class="table-auto border-collapse border-spacing-2 border border-slate-400 mb-8">
-              <thead>
-                <tr class="row">
-                  <th class="border border-slate-300 px-2 py-2">Id</th>
-                  <th class="border border-slate-300 px-2 py-2">Usuario</th>
-                  <th class="border border-slate-300 px-2 py-2">Email</th>
-                  <th class="border border-slate-300 px-2 py-2">Nombre</th>
-                  <th class="border border-slate-300 px-2 py-2">Apellidos</th>
-                  <th class="border border-slate-300 px-2 py-2">Admin</th>
-                  <th class="border border-slate-300 px-2 py-2">Imagen</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for a in admins%}
-                <tr class="row">
-                  <td class="border border-slate-300 px-2 py-2">{{a.id}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.username}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.email}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.firstName}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.lastName}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.admin}}
-                  </td>
-                  <td class="border border-slate-300 px-2 py-2 whitespace-nowrap">
-                    <img style="height:35px ;" src="{{a.image}}" alt="Avatar">
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            {% endif %}
+        {% if admins %}
+        <h2 class="text-xl font-bold text-gray-800 mt-4 mb-4">Usuarios Administradores</h2>
+        <table class="table-auto border-collapse border-spacing-2 border border-slate-400 mb-8">
+          <thead>
+            <tr class="row">
+              <th class="border border-slate-300 px-2 py-2">Id</th>
+              <th class="border border-slate-300 px-2 py-2">Usuario</th>
+              <th class="border border-slate-300 px-2 py-2">Email</th>
+              <th class="border border-slate-300 px-2 py-2">Nombre</th>
+              <th class="border border-slate-300 px-2 py-2">Apellidos</th>
+              <th class="border border-slate-300 px-2 py-2">Admin</th>
+              <th class="border border-slate-300 px-2 py-2">Imagen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in admins%}
+            <tr class="row">
+              <td class="border border-slate-300 px-2 py-2">{{a.id}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.username}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.email}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.firstName}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.lastName}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.admin}}
+              </td>
+              <td class="border border-slate-300 px-2 py-2 whitespace-nowrap">
+                <img style="height:35px ;" src="{{a.image}}" alt="Avatar">
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
 
-            {% if userswheredomain %}
-            <h2 class="text-xl font-bold text-gray-800 mt-4 mb-4">Usuarios con email de dominio: {{domain}}</h2>
-            <table class="table-auto border-collapse border-spacing-2 border border-slate-400 mb-8">
-              <thead>
-                <tr class="row">
-                  <th class="border border-slate-300 px-2 py-2">Id</th>
-                  <th class="border border-slate-300 px-2 py-2">Usuario</th>
-                  <th class="border border-slate-300 px-2 py-2">Email</th>
-                  <th class="border border-slate-300 px-2 py-2">Nombre</th>
-                  <th class="border border-slate-300 px-2 py-2">Apellidos</th>
-                  <th class="border border-slate-300 px-2 py-2">Admin</th>
-                  <th class="border border-slate-300 px-2 py-2">Imagen</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for a in userswheredomain%}
-                <tr class="row">
-                  <td class="border border-slate-300 px-2 py-2">{{a.id}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.username}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.email}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.firstName}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.lastName}}</td>
-                  <td class="border border-slate-300 px-2 py-2">{{a.admin}}
-                  </td>
-                  <td class="border border-slate-300 px-2 py-2 whitespace-nowrap">
-                    <img style="height:35px ;" src="{{a.image}}" alt="Avatar">
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            {% endif %}
+        {% if userswheredomain %}
+        <h2 class="text-xl font-bold text-gray-800 mt-4 mb-4">Usuarios con email de dominio: {{domain}}</h2>
+        <table class="table-auto border-collapse border-spacing-2 border border-slate-400 mb-8">
+          <thead>
+            <tr class="row">
+              <th class="border border-slate-300 px-2 py-2">Id</th>
+              <th class="border border-slate-300 px-2 py-2">Usuario</th>
+              <th class="border border-slate-300 px-2 py-2">Email</th>
+              <th class="border border-slate-300 px-2 py-2">Nombre</th>
+              <th class="border border-slate-300 px-2 py-2">Apellidos</th>
+              <th class="border border-slate-300 px-2 py-2">Admin</th>
+              <th class="border border-slate-300 px-2 py-2">Imagen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in userswheredomain%}
+            <tr class="row">
+              <td class="border border-slate-300 px-2 py-2">{{a.id}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.username}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.email}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.firstName}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.lastName}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.admin}}
+              </td>
+              <td class="border border-slate-300 px-2 py-2 whitespace-nowrap">
+                <img style="height:35px ;" src="{{a.image}}" alt="Avatar">
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+
+        {% if createfacture %}
+          <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Crear Factura</h2>
+            <form action="/save-factura" method="POST">
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="client">Cliente</label>
+                <input autocomplete="off" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="client" type="text" placeholder="Nombre del cliente" name="client">
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="date">Fecha</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date" type="date" name="date">
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="concept">Concepto</label>
+                <input autocomplete="off" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="concept" type="text" placeholder="Concepto de la factura" name="concept">
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="cuantity">Cantidad</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cuantity" type="number" step="any" placeholder="Cantidad" name="cuantity">
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="price">Precio</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="price" type="number" step="any" placeholder="Precio" name="price">
+              </div>
+              <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                  Guardar Factura
+                </button>
+              </div>
+            </form>
+          </div>
+        {% endif %}
+
+        {% if facturas %}
+        <h2 class="text-xl font-bold text-gray-800 mt-4 mb-4">Facturas creadas</h2>
+        <table class="table-auto border-collapse border-spacing-2 border border-slate-400 mb-8">
+          <thead>
+            <tr class="row">
+              <th class="border border-slate-300 px-2 py-2">Id</th>
+              <th class="border border-slate-300 px-2 py-2">Cliente</th>
+              <th class="border border-slate-300 px-2 py-2">Concepto</th>
+              <th class="border border-slate-300 px-2 py-2">Fecha</th>
+              <th class="border border-slate-300 px-2 py-2">Cantidad</th>
+              <th class="border border-slate-300 px-2 py-2">Precio</th>
+              <th class="border border-slate-300 px-2 py-2">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in facturas%}
+            <tr class="row">
+              <td class="border border-slate-300 px-2 py-2">{{a.id}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.client}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.concept}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.date}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.cuantity}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.price}}</td>
+              <td class="border border-slate-300 px-2 py-2">{{a.total}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+
+        
 
 
-          {% block content %}{% endblock %}
-        </main>
-        <aside class="w-1/6 bg-gray-200 p-4">
-            Right Sidebar
-        </aside>
-
-    </div>
-    <footer class="bg-gray-800 text-white p-4">
-        Footer
-    </footer>
+      {% block content %}{% endblock %}
+    </main>
+    <aside class="w-1/6 bg-gray-200 p-4">
+      Right Sidebar
+    </aside>
+  </div>
+  <footer class="bg-gray-800 text-white p-4">
+    Footer
+  </footer>
 </body>
 </html>

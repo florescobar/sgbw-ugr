@@ -17,3 +17,13 @@ model User {
 	admin       Boolean    @default(false)
 	image       String?    @unique
 }
+
+model Factura {
+	id          Int        @id @default(autoincrement())
+	client      String
+	date		DateTime
+	concept     String
+	cuantity    Float
+	price		Float
+	total       Float
+}
