@@ -35,5 +35,59 @@ async function routes (fastify, options) {
   // Falta
   // post, put, delete
 
+	// POST /api/facturas - Crear una nueva factura
+  fastify.post('/', async (req, res) => {
+    try {
+      const factura = await prisma.factura.create({
+        data: req.body
+      })
+
+      res.send({ ok: true, data: factura })
+    } catch (error) {
+      fastify.log.error(error)
+      res.code(500)
+      res.send({ ok: false, error: 'Internal server error' })
+    }
+  })
+
+  // PUT /api/facturas/:id - Actualizar una factura existente
+  fastify.put('/:id', async (req, res) => {
+    const { id } = req.params
+
+    try {
+      const factura = await prisma.factura.update({
+        where: {
+          id: Number(id)
+        },
+        data: req.body
+      })
+
+      res.send({ ok: true, data: factura })
+    } catch (error) {
+      fastify.log.error(error)
+      res.code(500)
+      res.send({ ok: false, error: 'Internal server error' })
+    }
+  })
+
+  // DELETE /api/facturas/:id Eliminar una factura existente
+  fastify.delete('/:id', async (req, res) => {
+    const { id } = req.params
+
+    try {
+      await prisma.factura.delete({
+        where: {
+          id: Number(id)
+        }
+      })
+
+      res.send({ ok: true, message: `Factura con Id ${id} eliminado correctamente` })
+    } catch (error) {
+      fastify.log.error(error)
+      res.code(500)
+      res.send({ ok: false, error: 'Internal server error' })
+    }
+  })
+
 }
 export default routes
