@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node api.js",
     "dev": "npx nodemon app",
     "test": "mocha --reporter spec"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/static": "^7.0.4",
     "@prisma/client": "^5.11.0",
     "body-parser": "^1.20.2",
     "chokidar": "^3.6.0",
